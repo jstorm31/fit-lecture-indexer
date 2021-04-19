@@ -32,9 +32,9 @@ class LectureVideoIndexer:
         if progress_callback is not None:
             self.progress_callback = progress_callback
 
-    def index(self, videoPath: os.PathLike) -> VideoIndex:
+    def index(self, video_path: os.PathLike) -> VideoIndex:
         self.__clean()
-        frames = self.__convert_to_frames(videoPath)
+        frames = self.__convert_to_frames(video_path)
         _, _, frames = next(os.walk(FRAMES_DIR))
 
         filtered_frames = self.__filter_similar_frames(frames_count=len(frames))
@@ -47,9 +47,9 @@ class LectureVideoIndexer:
             shutil.rmtree(dirpath)
         dirpath.mkdir(parents=True, exist_ok=True)
 
-    def __convert_to_frames(self, videoPath: os.PathLike) -> [str]:
+    def __convert_to_frames(self, video_path: os.PathLike) -> [str]:
         cmd = [
-            'ffmpeg', '-i', videoPath, '-vf', f"fps=1,select='not(mod(t,{self.config['frame_step']}))",
+            'ffmpeg', '-i', video_path, '-vf', f"fps=1,select='not(mod(t,{self.config['frame_step']}))",
             '-vsync', '0', '-frame_pts', '1',
             os.path.join(FRAMES_DIR, f'{FRAME_PREFIX}%d.png')
         ]
