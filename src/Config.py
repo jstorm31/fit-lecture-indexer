@@ -1,4 +1,6 @@
 from typing import TypedDict
 
+
 class Config(TypedDict):
-    frameStep: int
+    frame_step: int
+    image_similarity_treshold: float

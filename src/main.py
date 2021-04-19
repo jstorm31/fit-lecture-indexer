@@ -4,12 +4,19 @@ from LectureVideoIndexer import LectureVideoIndexer
 from Config import Config
 from Stage import Stage
 
-def handleProgress(stage: Stage, progress: float):
+current_stage = None
+
+
+def handle_progress(stage: Stage, progress: float):
+    if current_stage != stage:
+        bar.set_description(str(stage))
     bar.update(progress - bar.n)
 
-if __name__ == '__main__':
-    indexer = LectureVideoIndexer(config={ 'frameStep' : 2 }, progressCallback=handleProgress)
 
-    bar = tqdm(total = 100)
-    indexer.index('video/trimmed.mp4')
+if __name__ == '__main__':
+    indexer = LectureVideoIndexer(progress_callback=handle_progress)
+
+    bar = tqdm(total=100,)
+    index = indexer.index('video/lecture3.mp4')
     bar.close()
+    print("Extracted index: ", index)

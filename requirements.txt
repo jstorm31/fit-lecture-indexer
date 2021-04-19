@@ -1,2 +1,4 @@
 ffmpeg_progress_yield
 tqdm
+imagehash
+textdistance
