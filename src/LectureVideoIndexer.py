@@ -21,6 +21,7 @@ class LectureVideoIndexer:
     config = {
         'frame_step': 2,
         'image_similarity_treshold': 0.95,
+        'hash_size': 16,
     }
     progress_callback = None
 
@@ -28,9 +29,10 @@ class LectureVideoIndexer:
                  config: Optional[Config] = None,
                  progress_callback: Callable[[Stage, float], None] = None):
         if config is not None:
-            self.config = config
+            self.config = {**self.config, **config}
         if progress_callback is not None:
             self.progress_callback = progress_callback
+        print("Config", self.config)
 
     def index(self, video_path: os.PathLike) -> VideoIndex:
         self.__clean()
@@ -80,8 +82,8 @@ class LectureVideoIndexer:
         return filtered_frames
 
     def __compare_images(self, img_path_a: os.PathLike, img_path_b: os.PathLike) -> float:
-        hash_a = imagehash.phash(Image.open(img_path_a), hash_size=16)
-        hash_b = imagehash.phash(Image.open(img_path_b), hash_size=16)
+        hash_a = imagehash.phash(Image.open(img_path_a), hash_size=config['hash_size'])
+        hash_b = imagehash.phash(Image.open(img_path_b), hash_size=config['hash_size'])
 
         return hamming.normalized_similarity(str(hash_a), str(hash_b))
 

@@ -22,12 +22,24 @@ def handle_progress(stage: Stage, progress: float):
 if __name__ == '__main__':
     # Parse arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', help='Input video', required=True)
+    parser.add_argument('-i', help='Input video', required=True, type=str)
+    parser.add_argument('--frame_step', help='Frame step', required=False, type=int)
+    parser.add_argument('--hash_size', help='Number of bytes for image phash', required=False, type=int)
+    parser.add_argument('--similarity_treshold',
+                        help='Treshold two images are considered similar',
+                        required=False,
+                        type=float)
     args = parser.parse_args()
 
     # Index
-    indexer = LectureVideoIndexer(progress_callback=handle_progress)
-    bar = tqdm(total=100,)
+    config: Config = {
+        'frame_step': args.frame_step,
+        'hash_size': args.hash_size,
+        'image_similarity_treshold': args.similarity_treshold
+    }
+    print("Received config", config)
+    indexer = LectureVideoIndexer(config=config, progress_callback=handle_progress)
+    bar = tqdm(total=100)
 
     index = indexer.index(video_path=args.i)
     bar.close()
