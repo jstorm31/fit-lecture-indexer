@@ -2,3 +2,5 @@ ffmpeg_progress_yield
 tqdm
 imagehash
 textdistance
+opencv-python
+pytesseract

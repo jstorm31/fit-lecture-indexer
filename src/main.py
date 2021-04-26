@@ -33,9 +33,9 @@ if __name__ == '__main__':
 
     # Index
     config: Config = {
-        'frame_step': args.frame_step,
-        'hash_size': args.hash_size,
-        'image_similarity_treshold': args.similarity_treshold
+        'frame_step': args.frame_step or 2,
+        'hash_size': args.hash_size or 16,
+        'image_similarity_treshold': args.similarity_treshold or 0.95
     }
     print("Received config", config)
     indexer = LectureVideoIndexer(config=config, progress_callback=handle_progress)
