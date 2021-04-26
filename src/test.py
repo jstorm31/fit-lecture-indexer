@@ -20,13 +20,15 @@ def handle_progress(bar, stage: Stage, progress: float):
     bar.update(progress - bar.n)
 
 
-def compare_index(ref_video):
+def compare_index(ref_video, treshold):
     print(f"Creating index for {ref_video['name']}")
     bar = tqdm(total=100)
     current_stage = None
 
+    config = {'frame_step': 2, 'hash_size': 16, 'image_similarity_treshold': treshold}
+
     indexer = LectureVideoIndexer(
-        progress_callback=lambda stage, progress: handle_progress(bar, stage, progress))
+        config=config, progress_callback=lambda stage, progress: handle_progress(bar, stage, progress))
     index = indexer.index(os.path.join('video', ref_video['name']))
     print(index)
     bar.close()
@@ -38,11 +40,20 @@ def compare_index(ref_video):
 
 
 if __name__ == '__main__':
-    precisions = []
+    tresholds = [1, 0.99, 0.95, 0.9, 0.85, 0.8]
 
     with open('src/test_data.json') as json_data:
         test_data = json.load(json_data)
 
-        for video in test_data:
-            precisions.append(compare_index(video))
-    print(f"Average precision {precisions}")
+        for treshold in tresholds:
+            print("Running treshold ", treshold)
+            precisions = []
+
+            for video in test_data:
+                index = compare_index(video, treshold)
+                precisions.append(index)
+
+            avg_precision = sum(precisions) / len(test_data)
+
+            with open('output/measurements.txt', 'a') as output_file:
+                output_file.write(f"Treshold {treshold}: {round(avg_precision, 3)}\n")
