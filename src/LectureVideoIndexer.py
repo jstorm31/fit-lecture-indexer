@@ -4,40 +4,44 @@ import imagehash
 import pytesseract
 import cv2 as cv
 
-from typing import Optional, Callable
+from typing import Optional, Callable, TypedDict
 from pathlib import Path
-from ffmpeg_progress_yield import FfmpegProgress
 from PIL import Image
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 from collections import namedtuple
 
 from Config import Config
 from Stage import Stage
-from VideoIndex import VideoIndexEntry, VideoIndex
+from VideoConverter import VideoConverter
+from constants import FRAMES_DIR, FRAME_PREFIX
 
-FRAMES_DIR = 'frames'
-FRAME_PREFIX = 'frame_'
+ProgressCallback = Callable[[Stage, float], None]
+
+
+class VideoIndexEntry(TypedDict):
+    second: int
+    title: str
+
+
+VideoIndex = [VideoIndexEntry]
 
 
 class LectureVideoIndexer:
-    config = {
+    config: Config = {
         'frame_step': 2,
         'image_similarity_treshold': 0.95,
         'text_similarity_treshold': 0.85,
         'hash_size': 16,
     }
-    progress_callback = None
+    progress_callback: ProgressCallback
 
     __normalized_levenshtein = None
 
-    def __init__(self,
-                 config: Optional[Config] = None,
-                 progress_callback: Callable[[Stage, float], None] = None):
+    def __init__(self, config: Optional[Config] = None, progress_callback: ProgressCallback = lambda: None):
         if config is not None:
             self.config = {**self.config, **config}
-        if progress_callback is not None:
-            self.progress_callback = progress_callback
 
+        self.progress_callback = progress_callback
         self.__normalized_levenshtein = NormalizedLevenshtein()
 
     def index(self, video_path: os.PathLike, skip_converting: bool = False) -> VideoIndex:
@@ -59,16 +63,11 @@ class LectureVideoIndexer:
         dirpath.mkdir(parents=True, exist_ok=True)
 
     def __convert_to_frames(self, video_path: os.PathLike):
-        cmd = [
-            'ffmpeg', '-i', video_path, '-vf', f"fps=1,select='not(mod(t,{self.config['frame_step']}))",
-            '-vsync', '0', '-frame_pts', '1',
-            os.path.join(FRAMES_DIR, f'{FRAME_PREFIX}%d.png')
-        ]
+        converter = VideoConverter(
+            self.config['frame_step'],
+            progress_callback=lambda progress: self.progress_callback(Stage.CONVERTING, progress))
 
-        ff = FfmpegProgress(cmd)
-        for progress in ff.run_command_with_progress():
-            if self.progress_callback is not None:
-                self.progress_callback(Stage.CONVERTING, float(progress))
+        converter.convert_to_frames(video_path)
 
     def __filter_similar_frames(self, frames_count: int) -> [int]:
         filtered_frames: [int] = [0]
