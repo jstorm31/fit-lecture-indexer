@@ -27,6 +27,7 @@ class LectureVideoIndexer:
         'hash_size': 16,
     }
     progress_callback = None
+
     __normalized_levenshtein = None
 
     def __init__(self,
@@ -109,7 +110,7 @@ class LectureVideoIndexer:
                 similarity = self.__normalized_levenshtein.similarity(prev_title, title)
 
                 if similarity < self.config['text_similarity_treshold']:
-                    entry: VideoIndexEntry = {'second': frame, 'title': title, 'text': text}
+                    entry: VideoIndexEntry = {'second': frame, 'title': title, 'text': text.strip()}
                     index.append(entry)
 
             prev_title = title
@@ -121,19 +122,14 @@ class LectureVideoIndexer:
         img = cv.imread(path)
 
         img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-        img = cv.medianBlur(img, 2)
         thresholded_img = cv.adaptiveThreshold(img, 200, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11,
                                                2)
-
-        # TODO: Remove when tested
-        cv.imwrite(path, thresholded_img)
 
         return thresholded_img
 
     def __extract_title(self, text) -> str:
-        text = text.strip()
-        # TODO: removal of lines with nonsense words
-        title = text.split('\n')[0]
+        lines = [line for line in text.strip().split('\n') if not line.isspace() and len(line) > 1]
+        title = lines[0] if lines else None
 
         return title
 

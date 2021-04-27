@@ -30,17 +30,18 @@ def compare_index(ref_video, treshold):
     indexer = LectureVideoIndexer(
         config=config, progress_callback=lambda stage, progress: handle_progress(bar, stage, progress))
     index = indexer.index(os.path.join('video', ref_video['name']))
-    print(index)
+    seconds = [entry['second'] for entry in index]
+    print(seconds)
     bar.close()
 
-    intersection_cnt = len(list(set(index).intersection(set(ref_video['index']))))
+    intersection_cnt = len(list(set(seconds).intersection(set(ref_video['index']))))
     precision = intersection_cnt / len(ref_video['index'])
     print(precision)
     return precision
 
 
 if __name__ == '__main__':
-    tresholds = [1, 0.99, 0.95, 0.9, 0.85, 0.8]
+    tresholds = [0.95]
 
     with open('src/test_data.json') as json_data:
         test_data = json.load(json_data)
