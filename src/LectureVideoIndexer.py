@@ -8,11 +8,10 @@ from typing import Optional, Callable, TypedDict
 from pathlib import Path
 from PIL import Image
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
-from collections import namedtuple
 
 from Config import Config
 from Stage import Stage
-from VideoConverter import VideoConverter
+from VideoConverter import VideoConverter, CropRegion
 from constants import FRAMES_DIR, FRAME_PREFIX
 
 ProgressCallback = Callable[[Stage, float], None]
@@ -29,7 +28,7 @@ VideoIndex = [VideoIndexEntry]
 class LectureVideoIndexer:
     config: Config = {
         'frame_step': 2,
-        'image_similarity_treshold': 0.95,
+        'image_similarity_treshold': 0.9,
         'text_similarity_treshold': 0.85,
         'hash_size': 16,
     }
@@ -44,10 +43,13 @@ class LectureVideoIndexer:
         self.progress_callback = progress_callback
         self.__normalized_levenshtein = NormalizedLevenshtein()
 
-    def index(self, video_path: os.PathLike, skip_converting: bool = False) -> VideoIndex:
+    def index(self,
+              video_path: os.PathLike,
+              skip_converting: bool = False,
+              crop_region: CropRegion = None) -> VideoIndex:
         if not skip_converting:
             self.__clean()
-            self.__convert_to_frames(video_path)
+            self.__convert_to_frames(video_path, crop_region=crop_region)
 
         _, _, frames = next(os.walk(FRAMES_DIR))
         filtered_frames = self.__filter_similar_frames(frames_count=len(frames))
@@ -62,12 +64,12 @@ class LectureVideoIndexer:
             shutil.rmtree(dirpath)
         dirpath.mkdir(parents=True, exist_ok=True)
 
-    def __convert_to_frames(self, video_path: os.PathLike):
+    def __convert_to_frames(self, video_path: os.PathLike, crop_region: CropRegion = None):
         converter = VideoConverter(
             self.config['frame_step'],
             progress_callback=lambda progress: self.progress_callback(Stage.CONVERTING, progress))
 
-        converter.convert_to_frames(video_path)
+        converter.convert_to_frames(video_path=video_path, crop_region=crop_region)
 
     def __filter_similar_frames(self, frames_count: int) -> [int]:
         filtered_frames: [int] = [0]
@@ -109,7 +111,7 @@ class LectureVideoIndexer:
                 similarity = self.__normalized_levenshtein.similarity(prev_title, title)
 
                 if similarity < self.config['text_similarity_treshold']:
-                    entry: VideoIndexEntry = {'second': frame, 'title': title, 'text': text.strip()}
+                    entry: VideoIndexEntry = {'second': frame, 'title': title}
                     index.append(entry)
 
             prev_title = title
@@ -121,7 +123,8 @@ class LectureVideoIndexer:
         img = cv.imread(path)
 
         img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-        thresholded_img = cv.adaptiveThreshold(img, 200, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11,
+        img = cv.medianBlur(img, 3)
+        thresholded_img = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11,
                                                2)
 
         return thresholded_img

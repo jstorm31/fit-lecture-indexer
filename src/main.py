@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from tqdm import tqdm
 from LectureVideoIndexer import LectureVideoIndexer
+from VideoConverter import CropRegion
 from Config import Config
 from Stage import Stage
 
@@ -43,19 +44,31 @@ if __name__ == '__main__':
                         help='Treshold two images are considered similar',
                         required=False,
                         type=float)
+    parser.add_argument('--crop-region',
+                        dest='crop_region',
+                        help='Crop region for frames in format "x_from,x_to,y_from,y_to"',
+                        required=False,
+                        type=str)
     args = parser.parse_args()
 
     # Index
     config: Config = {
         'frame_step': args.frame_step or 2,
         'hash_size': args.hash_size or 16,
-        'image_similarity_treshold': args.image_similarity_treshold or 0.95,
+        'image_similarity_treshold': args.image_similarity_treshold or 0.9,
         'text_similarity_treshold': args.text_similarity_treshold or 0.85,
     }
+
+    crop_region = None
+    if args.crop_region:
+        coordinates = args.crop_region.split(',')
+        crop_region = CropRegion(int(coordinates[0]), int(coordinates[1]), int(coordinates[2]),
+                                 int(coordinates[3]))
+
     indexer = LectureVideoIndexer(config=config, progress_callback=handle_progress)
     bar = tqdm(total=100)
 
-    index = indexer.index(video_path=args.i, skip_converting=args.skip_converting)
+    index = indexer.index(video_path=args.i, skip_converting=args.skip_converting, crop_region=crop_region)
     bar.close()
 
     # Output
