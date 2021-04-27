@@ -6,6 +6,7 @@ import os
 from tqdm import tqdm
 from LectureVideoIndexer import LectureVideoIndexer
 from Stage import Stage
+from VideoConverter import CropRegion
 
 current_stage = None
 
@@ -26,10 +27,11 @@ def compare_index(ref_video, treshold):
     current_stage = None
 
     config = {'frame_step': 2, 'hash_size': 16, 'image_similarity_treshold': treshold}
+    crop_region = CropRegion(0, 80, 890, 1700)
 
     indexer = LectureVideoIndexer(
         config=config, progress_callback=lambda stage, progress: handle_progress(bar, stage, progress))
-    index = indexer.index(os.path.join('video', ref_video['name']))
+    index = indexer.index(video_path=os.path.join('video', ref_video['name']), crop_region=crop_region)
     seconds = [entry['second'] for entry in index]
     print(seconds)
     bar.close()
@@ -41,7 +43,7 @@ def compare_index(ref_video, treshold):
 
 
 if __name__ == '__main__':
-    tresholds = [0.95]
+    tresholds = [0.9]
 
     with open('src/test_data.json') as json_data:
         test_data = json.load(json_data)

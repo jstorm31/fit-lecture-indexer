@@ -113,8 +113,12 @@ class LectureVideoIndexer:
                 if similarity < self.config['text_similarity_treshold']:
                     entry: VideoIndexEntry = {'second': frame, 'title': title}
                     index.append(entry)
+            elif not prev_title and title:
+                entry: VideoIndexEntry = {'second': frame, 'title': title}
+                index.append(entry)
 
-            prev_title = title
+            if title:
+                prev_title = title
             self.progress_callback(Stage.PROCESSING, round(((i + 1) * 100) / len(frames)))
 
         return index
