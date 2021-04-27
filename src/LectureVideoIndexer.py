@@ -72,8 +72,9 @@ class LectureVideoIndexer:
     def __filter_similar_frames(self, frames_count: int) -> [int]:
         filtered_frames: [int] = [0]
         prev_frame = 0
+        max_frame = frames_count * self.config['frame_step']
 
-        for frame in range(self.config['frame_step'], frames_count, self.config['frame_step']):
+        for frame in range(self.config['frame_step'], max_frame, self.config['frame_step']):
             frame_path = self.__create_frame_path(frame)
             similarity = self.__compare_images(self.__create_frame_path(prev_frame), frame_path)
 
@@ -81,7 +82,7 @@ class LectureVideoIndexer:
                 filtered_frames.append(frame)
             prev_frame = frame
 
-            progress = round((frame + 1) / frames_count * 100)
+            progress = round((frame + 1) / max_frame * 100)
             self.progress_callback(Stage.FILTERING, progress)
 
         return filtered_frames
