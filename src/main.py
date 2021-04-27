@@ -20,12 +20,26 @@ def handle_progress(stage: Stage, progress: float):
 
 
 if __name__ == '__main__':
-    # Parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', help='Input video', required=True, type=str)
-    parser.add_argument('--frame_step', help='Frame step', required=False, type=int)
-    parser.add_argument('--hash_size', help='Number of bytes for image phash', required=False, type=int)
-    parser.add_argument('--similarity_treshold',
+    parser.add_argument('--skip-converting',
+                        dest='skip_converting',
+                        action='store_true',
+                        help='Skip converting video to frames',
+                        required=False)
+    parser.add_argument('--frame-step', dest='frame_step', help='Frame step', required=False, type=int)
+    parser.add_argument('--hash-size',
+                        dest='hash_size',
+                        help='Number of bytes for image phash',
+                        required=False,
+                        type=int)
+    parser.add_argument('--image-similarity-treshold',
+                        dest='image_similarity_treshold',
+                        help='Treshold two images are considered similar',
+                        required=False,
+                        type=float)
+    parser.add_argument('--text-similarity-treshold',
+                        dest='text_similarity_treshold',
                         help='Treshold two images are considered similar',
                         required=False,
                         type=float)
@@ -35,13 +49,13 @@ if __name__ == '__main__':
     config: Config = {
         'frame_step': args.frame_step or 2,
         'hash_size': args.hash_size or 16,
-        'image_similarity_treshold': args.similarity_treshold or 0.95
+        'image_similarity_treshold': args.image_similarity_treshold or 0.95,
+        'text_similarity_treshold': args.text_similarity_treshold or 0.85,
     }
-    print("Received config", config)
     indexer = LectureVideoIndexer(config=config, progress_callback=handle_progress)
     bar = tqdm(total=100)
 
-    index = indexer.index(video_path=args.i)
+    index = indexer.index(video_path=args.i, skip_converting=args.skip_converting)
     bar.close()
 
     # Output

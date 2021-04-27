@@ -8,26 +8,26 @@ from typing import Optional, Callable
 from pathlib import Path
 from ffmpeg_progress_yield import FfmpegProgress
 from PIL import Image
-from textdistance import hamming
+from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 from collections import namedtuple
 
 from Config import Config
 from Stage import Stage
+from VideoIndex import VideoIndexEntry, VideoIndex
 
 FRAMES_DIR = 'frames'
 FRAME_PREFIX = 'frame_'
-
-VideoIndexEntry = namedtuple("VideoIndex", "second title text")
-VideoIndex = [VideoIndexEntry]
 
 
 class LectureVideoIndexer:
     config = {
         'frame_step': 2,
         'image_similarity_treshold': 0.95,
+        'text_similarity_treshold': 0.85,
         'hash_size': 16,
     }
     progress_callback = None
+    __normalized_levenshtein = None
 
     def __init__(self,
                  config: Optional[Config] = None,
@@ -36,17 +36,19 @@ class LectureVideoIndexer:
             self.config = {**self.config, **config}
         if progress_callback is not None:
             self.progress_callback = progress_callback
-        print("Config", self.config)
 
-    def index(self, video_path: os.PathLike) -> VideoIndex:
-        # self.__clean()
-        frames = self.__convert_to_frames(video_path)
+        self.__normalized_levenshtein = NormalizedLevenshtein()
+
+    def index(self, video_path: os.PathLike, skip_converting: bool = False) -> VideoIndex:
+        if not skip_converting:
+            self.__clean()
+            self.__convert_to_frames(video_path)
+
         _, _, frames = next(os.walk(FRAMES_DIR))
-
         filtered_frames = self.__filter_similar_frames(frames_count=len(frames))
         index = self.__process_frames(filtered_frames)
 
-        return filtered_frames
+        return index
 
     def __clean(self):
         dirpath = Path(FRAMES_DIR)
@@ -55,20 +57,17 @@ class LectureVideoIndexer:
             shutil.rmtree(dirpath)
         dirpath.mkdir(parents=True, exist_ok=True)
 
-    def __convert_to_frames(self, video_path: os.PathLike) -> [str]:
+    def __convert_to_frames(self, video_path: os.PathLike):
         cmd = [
             'ffmpeg', '-i', video_path, '-vf', f"fps=1,select='not(mod(t,{self.config['frame_step']}))",
             '-vsync', '0', '-frame_pts', '1',
             os.path.join(FRAMES_DIR, f'{FRAME_PREFIX}%d.png')
         ]
 
-        # ff = FfmpegProgress(cmd)
-        # for progress in ff.run_command_with_progress():
-        #     if self.progress_callback is not None:
-        #         self.progress_callback(Stage.CONVERTING_FRAMES, float(progress))
-
-        _, _, frames = next(os.walk(FRAMES_DIR))
-        return frames
+        ff = FfmpegProgress(cmd)
+        for progress in ff.run_command_with_progress():
+            if self.progress_callback is not None:
+                self.progress_callback(Stage.CONVERTING, float(progress))
 
     def __filter_similar_frames(self, frames_count: int) -> [int]:
         filtered_frames: [int] = [0]
@@ -83,7 +82,7 @@ class LectureVideoIndexer:
             prev_frame = frame
 
             progress = round((frame + 1) / frames_count * 100)
-            self.progress_callback(Stage.FILTERING_FRAMES, progress)
+            self.progress_callback(Stage.FILTERING, progress)
 
         return filtered_frames
 
@@ -91,30 +90,51 @@ class LectureVideoIndexer:
         hash_a = imagehash.phash(Image.open(img_path_a), hash_size=self.config['hash_size'])
         hash_b = imagehash.phash(Image.open(img_path_b), hash_size=self.config['hash_size'])
 
-        return hamming.normalized_similarity(str(hash_a), str(hash_b))
+        return self.__normalized_levenshtein.similarity(str(hash_a), str(hash_b))
 
     def __process_frames(self, frames: [int]) -> VideoIndex:
-        timestamps: VideoIndex = []
+        index: VideoIndex = []
+        prev_title: str = None
 
         for i in range(len(frames)):
             frame = frames[i]
             frame_path = self.__create_frame_path(frame)
+            image = self.__preprocess_image(frame_path)
 
-            # Image thresholding
-            img = cv.imread(frame_path)
-            img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-            img = cv.medianBlur(img, 5)
-            thresholded_img = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11, 2)
-            cv.imwrite(frame_path, thresholded_img)
+            text = pytesseract.image_to_string(image)
+            title = self.__extract_title(text)
 
-            # Apply OCR
-            text = pytesseract.image_to_string(thresholded_img)
-            text = text.strip()
-            title = text.split('\n')[0]
-            print(frame, title)
+            if prev_title and title:
+                similarity = self.__normalized_levenshtein.similarity(prev_title, title)
 
-        return timestamps
+                if similarity < self.config['text_similarity_treshold']:
+                    entry: VideoIndexEntry = {'second': frame, 'title': title, 'text': text}
+                    index.append(entry)
 
+            prev_title = title
+            self.progress_callback(Stage.PROCESSING, round(((i + 1) * 100) / len(frames)))
+
+        return index
+
+    def __preprocess_image(self, path: os.PathLike):
+        img = cv.imread(path)
+
+        img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        img = cv.medianBlur(img, 2)
+        thresholded_img = cv.adaptiveThreshold(img, 200, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11,
+                                               2)
+
+        # TODO: Remove when tested
+        cv.imwrite(path, thresholded_img)
+
+        return thresholded_img
+
+    def __extract_title(self, text) -> str:
+        text = text.strip()
+        # TODO: removal of lines with nonsense words
+        title = text.split('\n')[0]
+
+        return title
 
     def __create_frame_path(self, frame) -> str:
         return os.path.join(FRAMES_DIR, f"{FRAME_PREFIX}{frame}.png")

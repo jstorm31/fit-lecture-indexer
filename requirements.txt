@@ -1,6 +1,6 @@
 ffmpeg_progress_yield
 tqdm
 imagehash
-textdistance
+strsimpy
 opencv-python
 pytesseract
