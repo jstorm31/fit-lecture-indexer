@@ -18,13 +18,26 @@ class TOCProcessor(FrameProcessor):
 
     def process_frame(self, frame: int, title: str) -> Optional[VideoIndexEntry]:
         if title and self.current_slide < len(self.toc):
-            expected_title: str = self.toc[self.current_slide]['title']
-            similarity = self.normalized_levenshtein.similarity(expected_title, title)
+            similarity, expected_title = self.__similarity(title, self.current_slide)
 
             if similarity >= self.similarity_treshold:
                 entry: VideoIndexEntry = {'second': frame, 'title': expected_title}
                 self.current_slide += 1
-
                 return entry
 
+            # Check also the next slide in case the current one has been missed
+            if self.current_slide + 1 >= len(self.toc):
+                similarity, expected_title = self.__similarity(title, self.current_slide + 1)
+
+                if similarity >= self.similarity_treshold:
+                    entry: VideoIndexEntry = {'second': frame, 'title': expected_title}
+                    self.current_slide += 2
+                    return entry
+
         return None
+
+    def __similarity(self, title: str, slide_index: int) -> (float, str):
+        expected_title: str = self.toc[slide_index]['title']
+        similarity = self.normalized_levenshtein.similarity(expected_title, title)
+
+        return similarity, expected_title
