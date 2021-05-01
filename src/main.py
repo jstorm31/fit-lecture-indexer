@@ -48,6 +48,11 @@ if __name__ == '__main__':
                         help='Crop region for frames in format "x_from,x_to,y_from,y_to"',
                         required=False,
                         type=str)
+    parser.add_argument('--toc',
+                        dest='toc_path',
+                        help='Path to a table of contents file in JSON format with array of slides titles',
+                        required=False,
+                        type=str)
     args = parser.parse_args()
 
     # Index
@@ -64,10 +69,18 @@ if __name__ == '__main__':
         crop_region = CropRegion(int(coordinates[0]), int(coordinates[1]), int(coordinates[2]),
                                  int(coordinates[3]))
 
+    toc = None
+    if args.toc_path:
+        with open(args.toc_path) as toc_file:
+            toc = json.load(toc_file)
+
     indexer = LectureVideoIndexer(config=config, progress_callback=handle_progress)
     bar = tqdm(total=100)
 
-    index = indexer.index(video_path=args.i, skip_converting=args.skip_converting, crop_region=crop_region)
+    index = indexer.index(video_path=args.i,
+                          skip_converting=args.skip_converting,
+                          crop_region=crop_region,
+                          toc=toc)
     bar.close()
 
     # Output

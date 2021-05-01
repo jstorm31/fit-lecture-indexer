@@ -12,7 +12,7 @@ from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 from VideoConverter import VideoConverter, CropRegion
 from constants import FRAMES_DIR, FRAME_PREFIX
 from Types import Config, Stage, VideoIndexEntry, TableOfContents
-from processor import FrameProcessor, BasicFrameProcessor
+from processor import FrameProcessor, BasicFrameProcessor, TOCProcessor
 
 ProgressCallback = Callable[[Stage, float], None]
 
@@ -51,8 +51,10 @@ class LectureVideoIndexer:
         _, _, frames = next(os.walk(FRAMES_DIR))
         filtered_frames = self.__filter_similar_frames(frames_count=len(frames))
 
-        processor = BasicFrameProcessor(self.config['text_similarity_treshold'])
-        index = self.__process_frames(filtered_frames, processor, toc)
+        processor = BasicFrameProcessor(
+            self.config['text_similarity_treshold']) if toc is None else TOCProcessor(
+                toc, self.config['text_similarity_treshold'])
+        index = self.__process_frames(filtered_frames, processor)
 
         return index
 
@@ -94,10 +96,7 @@ class LectureVideoIndexer:
 
         return self.__normalized_levenshtein.similarity(str(hash_a), str(hash_b))
 
-    def __process_frames(self,
-                         frames: [int],
-                         processor: FrameProcessor,
-                         toc: TableOfContents = None) -> VideoIndex:
+    def __process_frames(self, frames: [int], processor: FrameProcessor) -> VideoIndex:
         index: VideoIndex = []
 
         for i in range(len(frames)):
