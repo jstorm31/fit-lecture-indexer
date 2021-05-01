@@ -45,7 +45,7 @@ def compare_index(ref_video, treshold):
 if __name__ == '__main__':
     tresholds = [0.9]
 
-    with open('src/test_data.json') as json_data:
+    with open('src/test_data/reference.json') as json_data:
         test_data = json.load(json_data)
 
         for treshold in tresholds:

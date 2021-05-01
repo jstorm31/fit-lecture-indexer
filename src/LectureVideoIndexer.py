@@ -9,18 +9,12 @@ from pathlib import Path
 from PIL import Image
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 
-from Config import Config
-from Stage import Stage
 from VideoConverter import VideoConverter, CropRegion
 from constants import FRAMES_DIR, FRAME_PREFIX
+from Types import Config, Stage, VideoIndexEntry, TableOfContents
+from processor import FrameProcessor, BasicFrameProcessor
 
 ProgressCallback = Callable[[Stage, float], None]
-
-
-class VideoIndexEntry(TypedDict):
-    second: int
-    title: str
-
 
 VideoIndex = [VideoIndexEntry]
 
@@ -43,17 +37,22 @@ class LectureVideoIndexer:
         self.progress_callback = progress_callback
         self.__normalized_levenshtein = NormalizedLevenshtein()
 
-    def index(self,
-              video_path: os.PathLike,
-              skip_converting: bool = False,
-              crop_region: CropRegion = None) -> VideoIndex:
+    def index(
+        self,
+        video_path: os.PathLike,
+        skip_converting: bool = False,
+        crop_region: CropRegion = None,
+        toc: TableOfContents = None,
+    ) -> VideoIndex:
         if not skip_converting:
             self.__clean()
             self.__convert_to_frames(video_path, crop_region=crop_region)
 
         _, _, frames = next(os.walk(FRAMES_DIR))
         filtered_frames = self.__filter_similar_frames(frames_count=len(frames))
-        index = self.__process_frames(filtered_frames)
+
+        processor = BasicFrameProcessor(self.config['text_similarity_treshold'])
+        index = self.__process_frames(filtered_frames, processor, toc)
 
         return index
 
@@ -95,9 +94,11 @@ class LectureVideoIndexer:
 
         return self.__normalized_levenshtein.similarity(str(hash_a), str(hash_b))
 
-    def __process_frames(self, frames: [int]) -> VideoIndex:
+    def __process_frames(self,
+                         frames: [int],
+                         processor: FrameProcessor,
+                         toc: TableOfContents = None) -> VideoIndex:
         index: VideoIndex = []
-        prev_title: str = None
 
         for i in range(len(frames)):
             frame = frames[i]
@@ -106,19 +107,11 @@ class LectureVideoIndexer:
 
             text = pytesseract.image_to_string(image)
             title = self.__extract_title(text)
+            entry = processor.process_frame(frame, title)
 
-            if prev_title and title:
-                similarity = self.__normalized_levenshtein.similarity(prev_title, title)
-
-                if similarity < self.config['text_similarity_treshold']:
-                    entry: VideoIndexEntry = {'second': frame, 'title': title}
-                    index.append(entry)
-            elif not prev_title and title:
-                entry: VideoIndexEntry = {'second': frame, 'title': title}
+            if entry:
                 index.append(entry)
 
-            if title:
-                prev_title = title
             self.progress_callback(Stage.PROCESSING, round(((i + 1) * 100) / len(frames)))
 
         return index

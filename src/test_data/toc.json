@@ -1,0 +1,496 @@
+{
+    "lectures": [
+        {
+            "title": "Motivation and Course Overview",
+            "slide-url": "lecture0.html#/1",
+            "slides": [],
+            "sections": [
+                {
+                    "title": "Motivation",
+                    "slide-url": "lecture0.html#/2",
+                    "slides": [
+                        { "title": "Web 2.0", "slide-url": "lecture0.html#/3" },
+                        { "title": "Motivation in Brief", "slide-url": "lecture0.html#/4" },
+                        { "title": "AM2 and AM1 Courses", "slide-url": "lecture0.html#/5" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "Scope, Requirements, Learnings",
+                    "slide-url": "lecture0.html#/6",
+                    "slides": [
+                        { "title": "Scope", "slide-url": "lecture0.html#/scope" },
+                        { "title": "Organization of Lectures", "slide-url": "lecture0.html#/plan" },
+                        { "title": "Organization of Practicals", "slide-url": "lecture0.html#/9" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "Assessment, Resources, Communication",
+                    "slide-url": "lecture0.html#/10",
+                    "slides": [
+                        { "title": "Assessment", "slide-url": "lecture0.html#/assessment" },
+                        { "title": "Assessment – Final Marks", "slide-url": "lecture0.html#/12" },
+                        { "title": "Resources", "slide-url": "lecture0.html#/resources" },
+                        { "title": "About Slides", "slide-url": "lecture0.html#/humla" }
+                    ],
+                    "sections": []
+                }
+            ],
+            "lastModified": "Tue Feb 16 2021, 08:39:41",
+            "slidesCount": 14
+        },
+        {
+            "title": "Asynchronous I/O",
+            "slide-url": "lecture1.html#/1",
+            "slides": [],
+            "sections": [
+                {
+                    "title": "Asynchronous I/O Overview",
+                    "slide-url": "lecture1.html#/2",
+                    "slides": [
+                        { "title": "Recall: Application Server", "slide-url": "lecture1.html#/3" },
+                        { "title": "Programming Models", "slide-url": "lecture1.html#/4" },
+                        { "title": "Asynchronous I/O", "slide-url": "lecture1.html#/5" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "Asynchronous I/O in JavaScript",
+                    "slide-url": "lecture1.html#/6",
+                    "slides": [
+                        { "title": "Web 2.0 Application Architecture", "slide-url": "lecture1.html#/7" },
+                        { "title": "JavaScript", "slide-url": "lecture1.html#/8" },
+                        { "title": "Javascript Runtime", "slide-url": "lecture1.html#/9" },
+                        { "title": "Stack", "slide-url": "lecture1.html#/10" },
+                        { "title": "Event Loop", "slide-url": "lecture1.html#/11" },
+                        { "title": "Handling Request", "slide-url": "lecture1.html#/12" },
+                        { "title": "Multiple Runtimes", "slide-url": "lecture1.html#/13" },
+                        { "title": "Web Workers", "slide-url": "lecture1.html#/14" },
+                        { "title": "Node.js", "slide-url": "lecture1.html#/15" },
+                        { "title": "Node.js Event Loop", "slide-url": "lecture1.html#/16" },
+                        { "title": "HTTP Server in Node.js", "slide-url": "lecture1.html#/17" },
+                        { "title": "Google Apps Script", "slide-url": "lecture1.html#/18" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "JavaScript Language Overview",
+                    "slide-url": "lecture1.html#/19",
+                    "slides": [
+                        { "title": "Objects and Arrays", "slide-url": "lecture1.html#/20" },
+                        { "title": "Functions", "slide-url": "lecture1.html#/21" },
+                        { "title": "Closures", "slide-url": "lecture1.html#/22" },
+                        { "title": "Objects", "slide-url": "lecture1.html#/23" },
+                        { "title": "Arrow Functions", "slide-url": "lecture1.html#/24" },
+                        { "title": "Callback Hell", "slide-url": "lecture1.html#/25" },
+                        { "title": "Promise Object", "slide-url": "lecture1.html#/26" },
+                        { "title": "Callback Hell Example", "slide-url": "lecture1.html#/27" },
+                        { "title": "Promise Example", "slide-url": "lecture1.html#/28" },
+                        { "title": "async/await", "slide-url": "lecture1.html#/29" }
+                    ],
+                    "sections": []
+                }
+            ],
+            "lastModified": "Sun Mar 14 2021, 11:18:53",
+            "slidesCount": 29
+        },
+        {
+            "title": "Cloud Architectures",
+            "slide-url": "lecture2.html#/1",
+            "slides": [],
+            "sections": [
+                {
+                    "title": "Introduction",
+                    "slide-url": "lecture2.html#/2",
+                    "slides": [
+                        { "title": "Terminology", "slide-url": "lecture2.html#/3" },
+                        { "title": "What is a Cloud?", "slide-url": "lecture2.html#/4" },
+                        { "title": "What is a Cloud?", "slide-url": "lecture2.html#/5" },
+                        { "title": "Traditional Solution to Infrastructure", "slide-url": "lecture2.html#/6" },
+                        { "title": "Good Performance – Cloud Solution", "slide-url": "lecture2.html#/7" },
+                        { "title": "CAPEX vs. OPEX", "slide-url": "lecture2.html#/8" },
+                        { "title": "Cloud Computing Concepts", "slide-url": "lecture2.html#/9" },
+                        { "title": "Cloud Computing Concepts (Cont.)", "slide-url": "lecture2.html#/10" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "Cloud Architecture",
+                    "slide-url": "lecture2.html#/16",
+                    "slides": [],
+                    "sections": [
+                        {
+                            "title": "Service Models",
+                            "slide-url": "lecture2.html#/11",
+                            "slides": [
+                                { "title": "Service Models", "slide-url": "lecture2.html#/12" },
+                                { "title": "IaaS: Infrastructure as a Service", "slide-url": "lecture2.html#/13" },
+                                { "title": "PaaS: Platform as a Service", "slide-url": "lecture2.html#/14" },
+                                { "title": "SaaS: Software as a Service", "slide-url": "lecture2.html#/15" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Multitenancy",
+                            "slide-url": "lecture2.html#/16",
+                            "slides": [
+                                { "title": "Multitenancy", "slide-url": "lecture2.html#/17" },
+                                { "title": "Shared Everything", "slide-url": "lecture2.html#/18" },
+                                {
+                                    "title": "Shared Infrastructure: Virtual Machines",
+                                    "slide-url": "lecture2.html#/19"
+                                },
+                                {
+                                    "title": "Shared Infrastructure: OS Virtualization",
+                                    "slide-url": "lecture2.html#/20"
+                                }
+                            ],
+                            "sections": []
+                        }
+                    ]
+                },
+                {
+                    "title": "Infrastructure as a Service",
+                    "slide-url": "lecture2.html#/21",
+                    "slides": [
+                        { "title": "Overview", "slide-url": "lecture2.html#/22" },
+                        { "title": "Region", "slide-url": "lecture2.html#/23" },
+                        { "title": "Datacenters", "slide-url": "lecture2.html#/24" },
+                        { "title": "Off-box Network Virtualization", "slide-url": "lecture2.html#/25" }
+                    ],
+                    "sections": [
+                        {
+                            "title": "Networking",
+                            "slide-url": "lecture2.html#/26",
+                            "slides": [
+                                { "title": "Virtual Cloud Network", "slide-url": "lecture2.html#/27" },
+                                { "title": "VCN Routing and Security", "slide-url": "lecture2.html#/28" },
+                                { "title": "Peering", "slide-url": "lecture2.html#/29" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Compute",
+                            "slide-url": "lecture2.html#/30",
+                            "slides": [
+                                { "title": "Compute Instances", "slide-url": "lecture2.html#/31" },
+                                { "title": "Image", "slide-url": "lecture2.html#/32" },
+                                { "title": "Autoscaling", "slide-url": "lecture2.html#/33" },
+                                { "title": "Load Balancer", "slide-url": "lecture2.html#/34" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Storage",
+                            "slide-url": "lecture2.html#/35",
+                            "slides": [
+                                { "title": "Object Storage", "slide-url": "lecture2.html#/36" },
+                                { "title": "Block Storage", "slide-url": "lecture2.html#/37" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Infrastructure as Code",
+                            "slide-url": "lecture2.html#/38",
+                            "slides": [
+                                { "title": "Overview", "slide-url": "lecture2.html#/39" },
+                                { "title": "Terraform", "slide-url": "lecture2.html#/40" }
+                            ],
+                            "sections": []
+                        }
+                    ]
+                }
+            ],
+            "lastModified": "Sun Mar 14 2021, 11:18:53",
+            "slidesCount": 40
+        },
+        {
+            "title": "Cloud Native and Microservices",
+            "slide-url": "lecture3.html#/1",
+            "slides": [],
+            "sections": [
+                {
+                    "title": "Cloud Native",
+                    "slide-url": "lecture3.html#/2",
+                    "slides": [
+                        { "title": "Overview", "slide-url": "lecture3.html#/3" },
+                        { "title": "CNFS Trail Map", "slide-url": "lecture3.html#/4" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "Microservices",
+                    "slide-url": "lecture3.html#/5",
+                    "slides": [
+                        { "title": "Overview", "slide-url": "lecture3.html#/6" },
+                        { "title": "Major Characteristics", "slide-url": "lecture3.html#/7" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "Containers",
+                    "slide-url": "lecture3.html#/13",
+                    "slides": [],
+                    "sections": [
+                        {
+                            "title": "Overview",
+                            "slide-url": "lecture3.html#/8",
+                            "slides": [
+                                { "title": "Virtual Machines vs. Containers", "slide-url": "lecture3.html#/9" },
+                                { "title": "Overview", "slide-url": "lecture3.html#/10" },
+                                { "title": "Containerd", "slide-url": "lecture3.html#/11" },
+                                { "title": "Terminology", "slide-url": "lecture3.html#/12" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Linux Namespaces",
+                            "slide-url": "lecture3.html#/13",
+                            "slides": [
+                                { "title": "Linux Namespaces", "slide-url": "lecture3.html#/14" },
+                                { "title": "Types: mnt, uts, ipc and pid", "slide-url": "lecture3.html#/15" },
+                                { "title": "Types: net", "slide-url": "lecture3.html#/16" },
+                                { "title": "Types: user", "slide-url": "lecture3.html#/17" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Images",
+                            "slide-url": "lecture3.html#/18",
+                            "slides": [
+                                { "title": "Container Images", "slide-url": "lecture3.html#/19" },
+                                { "title": "Image Layering with OverlayFS", "slide-url": "lecture3.html#/20" },
+                                { "title": "Image Layers Example", "slide-url": "lecture3.html#/21" },
+                                { "title": "Dockerfile", "slide-url": "lecture3.html#/22" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Working with Docker",
+                            "slide-url": "lecture3.html#/23",
+                            "slides": [
+                                { "title": "Docker Container State Diagram", "slide-url": "lecture3.html#/24" },
+                                { "title": "Commands (1)", "slide-url": "lecture3.html#/25" },
+                                { "title": "Commands (2)", "slide-url": "lecture3.html#/26" },
+                                { "title": "Networking and Linking", "slide-url": "lecture3.html#/27" },
+                                { "title": "Networking Commands", "slide-url": "lecture3.html#/28" },
+                                { "title": "Data Volumes", "slide-url": "lecture3.html#/29" }
+                            ],
+                            "sections": []
+                        }
+                    ]
+                },
+                {
+                    "title": "Kubernetes",
+                    "slide-url": "lecture3.html#/30",
+                    "slides": [
+                        { "title": "Overview", "slide-url": "lecture3.html#/31" },
+                        { "title": "Features", "slide-url": "lecture3.html#/32" },
+                        { "title": "Architecture", "slide-url": "lecture3.html#/33" },
+                        { "title": "Control Plane Components", "slide-url": "lecture3.html#/34" },
+                        { "title": "Control Plane Components", "slide-url": "lecture3.html#/35" },
+                        { "title": "Node", "slide-url": "lecture3.html#/36" },
+                        { "title": "Container Stack", "slide-url": "lecture3.html#/37" },
+                        { "title": "Pod", "slide-url": "lecture3.html#/38" },
+                        { "title": "Workloads", "slide-url": "lecture3.html#/39" },
+                        { "title": "Deployment Spec Example", "slide-url": "lecture3.html#/40" },
+                        { "title": "Service", "slide-url": "lecture3.html#/41" },
+                        { "title": "Demo", "slide-url": "lecture3.html#/42" }
+                    ],
+                    "sections": []
+                }
+            ],
+            "lastModified": "Mon Apr 12 2021, 20:49:12",
+            "slidesCount": 42
+        },
+        {
+            "title": "Browser Networking",
+            "slide-url": "lecture4.html#/1",
+            "slides": [],
+            "sections": [
+                {
+                    "title": "Browser Networking",
+                    "slide-url": "lecture4.html#/2",
+                    "slides": [
+                        { "title": "Browser Networking", "slide-url": "lecture4.html#/3" },
+                        { "title": "Connection Management", "slide-url": "lecture4.html#/4" },
+                        { "title": "Network Security", "slide-url": "lecture4.html#/5" },
+                        { "title": "Mashups", "slide-url": "lecture4.html#/6" }
+                    ],
+                    "sections": [
+                        {
+                            "title": "XHR",
+                            "slide-url": "lecture4.html#/7",
+                            "slides": [
+                                { "title": "XMLHttpRequest (XHR)", "slide-url": "lecture4.html#/8" },
+                                {
+                                    "title": "XHR Interface – Key Methods and Properties",
+                                    "slide-url": "lecture4.html#/9"
+                                },
+                                { "title": "How XHR works", "slide-url": "lecture4.html#/10" }
+                            ],
+                            "sections": []
+                        }
+                    ]
+                },
+                {
+                    "title": "Security Mechanisms",
+                    "slide-url": "lecture4.html#/11",
+                    "slides": [
+                        { "title": "Same Origin Policy", "slide-url": "lecture4.html#/sameorigin" },
+                        { "title": "Why Same Origin Policy?", "slide-url": "lecture4.html#/13" }
+                    ],
+                    "sections": [
+                        {
+                            "title": "Scripting Attacks",
+                            "slide-url": "lecture4.html#/14",
+                            "slides": [
+                                { "title": "Overview", "slide-url": "lecture4.html#/15" },
+                                { "title": "Recall: State management in HTTP", "slide-url": "lecture4.html#/16" },
+                                { "title": "Cross-site Request Forgery (CSRF)", "slide-url": "lecture4.html#/17" },
+                                { "title": "Cross-site Scripting Attack (XSS)", "slide-url": "lecture4.html#/18" },
+                                { "title": "XSS Examples", "slide-url": "lecture4.html#/19" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Cross-origin Resource Sharing Protocol (CORS)",
+                            "slide-url": "lecture4.html#/20",
+                            "slides": [
+                                { "title": "Overview", "slide-url": "lecture4.html#/CORS" },
+                                { "title": "CORS Protocol – GET", "slide-url": "lecture4.html#/22" },
+                                {
+                                    "title": "CORS Protocol – other methods and \"preflight\"",
+                                    "slide-url": "lecture4.html#/23"
+                                }
+                            ],
+                            "sections": []
+                        }
+                    ]
+                },
+                {
+                    "title": "JSON and JSONP",
+                    "slide-url": "lecture4.html#/24",
+                    "slides": [
+                        { "title": "Recall: JSON", "slide-url": "lecture4.html#/25" },
+                        { "title": "JSON in JavaScript", "slide-url": "lecture4.html#/26" },
+                        { "title": "JSONP", "slide-url": "lecture4.html#/27" },
+                        { "title": "JSONP in JavaScript", "slide-url": "lecture4.html#/28" }
+                    ],
+                    "sections": []
+                }
+            ],
+            "lastModified": "Mon Apr 26 2021, 10:03:06",
+            "slidesCount": 28
+        },
+        {
+            "title": "Security",
+            "slide-url": "lecture5.html#/1",
+            "slides": [],
+            "sections": [
+                {
+                    "title": "Security Concepts",
+                    "slide-url": "lecture5.html#/2",
+                    "slides": [
+                        { "title": "Web Service Security Concepts", "slide-url": "lecture5.html#/3" },
+                        { "title": "Data on the Web", "slide-url": "lecture5.html#/4" },
+                        { "title": "Authentication and Authorization", "slide-url": "lecture5.html#/5" },
+                        { "title": "Basic Access Authentication", "slide-url": "lecture5.html#/6" },
+                        { "title": "Basic Access Authentication – Credentials", "slide-url": "lecture5.html#/7" },
+                        { "title": "Digest Access Authentication", "slide-url": "lecture5.html#/8" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "Transport Level Security",
+                    "slide-url": "lecture5.html#/9",
+                    "slides": [
+                        { "title": "Overview", "slide-url": "lecture5.html#/10" },
+                        { "title": "TLS Services", "slide-url": "lecture5.html#/11" },
+                        { "title": "TLS Handshake Protocol", "slide-url": "lecture5.html#/12" },
+                        { "title": "Key Exchange", "slide-url": "lecture5.html#/13" },
+                        { "title": "TLS and Proxy Servers", "slide-url": "lecture5.html#/14" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "JSON Web Token",
+                    "slide-url": "lecture5.html#/15",
+                    "slides": [
+                        { "title": "Overview", "slide-url": "lecture5.html#/16" },
+                        { "title": "Use of JWT", "slide-url": "lecture5.html#/17" },
+                        { "title": "JWT Structure", "slide-url": "lecture5.html#/18" },
+                        { "title": "JWT Structure (Cont.)", "slide-url": "lecture5.html#/19" },
+                        { "title": "How to use JWT", "slide-url": "lecture5.html#/20" }
+                    ],
+                    "sections": []
+                },
+                {
+                    "title": "OAuth 2.0",
+                    "slide-url": "lecture5.html#/21",
+                    "slides": [
+                        { "title": "Motivation", "slide-url": "lecture5.html#/22" },
+                        { "title": "When there is no OAuth", "slide-url": "lecture5.html#/23" },
+                        { "title": "OAuth 2.0 Protocol", "slide-url": "lecture5.html#/24" },
+                        { "title": "Terminology", "slide-url": "lecture5.html#/25" }
+                    ],
+                    "sections": [
+                        {
+                            "title": "Client-side Web Apps",
+                            "slide-url": "lecture5.html#/26",
+                            "slides": [
+                                { "title": "Client-side Web Apps", "slide-url": "lecture5.html#/27" },
+                                { "title": "Demo – List of Contacts\n\t\t\t\t", "slide-url": "lecture5.html#/28" },
+                                {
+                                    "title": "Client-side Web Apps Protocol\n\t\t\t\t",
+                                    "slide-url": "lecture5.html#/29"
+                                },
+                                { "title": "Redirection – Step 1\n\t\t\t\t", "slide-url": "lecture5.html#/30" },
+                                { "title": "Callback – steps 4 and 5\n\t\t\t\t", "slide-url": "lecture5.html#/31" },
+                                { "title": "Accessing Resources – Step 6\n\t\t\t\t", "slide-url": "lecture5.html#/32" },
+                                {
+                                    "title": "Cross-Origin Resource Sharing\n\t\t\t\t",
+                                    "slide-url": "lecture5.html#/33"
+                                },
+                                { "title": "Example Application Registration", "slide-url": "lecture5.html#/34" }
+                            ],
+                            "sections": []
+                        },
+                        {
+                            "title": "Server-side Web Apps",
+                            "slide-url": "lecture5.html#/35",
+                            "slides": [
+                                { "title": "Server-side Web Apps", "slide-url": "lecture5.html#/36" },
+                                {
+                                    "title": "Server-side Web Apps Protocol\n\t\t\t\t",
+                                    "slide-url": "lecture5.html#/37"
+                                },
+                                { "title": "Redirection – Step 1\n\t\t\t\t", "slide-url": "lecture5.html#/38" },
+                                {
+                                    "title": "Callback + Access Token Request – steps 4, 5\n\t\t\t\t",
+                                    "slide-url": "lecture5.html#/39"
+                                },
+                                { "title": "Access Token (cont.)\n\t\t\t\t", "slide-url": "lecture5.html#/40" }
+                            ],
+                            "sections": []
+                        }
+                    ]
+                },
+                {
+                    "title": "OpenID",
+                    "slide-url": "lecture5.html#/41",
+                    "slides": [
+                        { "title": "OpenID Protocol", "slide-url": "lecture5.html#/42" },
+                        { "title": "Interaction Sequence", "slide-url": "lecture5.html#/43" },
+                        { "title": "Login Authentication Request – Step 5", "slide-url": "lecture5.html#/44" },
+                        { "title": "Login Authentication Response – Step 8", "slide-url": "lecture5.html#/45" }
+                    ],
+                    "sections": []
+                }
+            ],
+            "lastModified": "Mon Apr 26 2021, 10:03:06",
+            "slidesCount": 45
+        }
+    ]
+}

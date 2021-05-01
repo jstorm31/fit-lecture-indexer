@@ -7,8 +7,7 @@ from pathlib import Path
 from tqdm import tqdm
 from LectureVideoIndexer import LectureVideoIndexer
 from VideoConverter import CropRegion
-from Config import Config
-from Stage import Stage
+from Types import Config, Stage
 
 OUTPUT_DIR = 'output'
 current_stage = None
