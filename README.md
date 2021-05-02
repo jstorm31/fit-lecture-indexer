@@ -22,7 +22,7 @@ Required python version: >= 3.8
 ### API
 
 ```python
-from lecture_video_indexer import LectureVideoIndexer
+from indexer import LectureVideoIndexer
 
 indexer = LectureVideoIndexer()
 index = indexer.index(video_path='video/example.mp4')
@@ -89,7 +89,7 @@ indexer = LectureVideoIndexer(config=config)
 Provide this callback to receive updates about current running stage and its progress in percent.
 
 ```python
-from lecture_video_indexer import Stage
+from indexer import Stage
 
 ProgressCallback = Callable[[Stage, float], None]
 
@@ -129,7 +129,7 @@ A TOC input file expecting 5 slides in the lecture.
 
 Usage
 ```python
-from lecture_video_indexer import LectureVideoIndexer, CropRegion
+from indexer import LectureVideoIndexer, CropRegion
 
 indexer = LectureVideoIndexer()
 index = indexer.index(video_path='video/example.mp4', crop_region=CropRegion(0, 80, 890, 1700), toc='toc.json')
