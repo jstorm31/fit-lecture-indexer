@@ -4,7 +4,7 @@ from os import PathLike, path
 from typing import Callable
 from collections import namedtuple
 
-from constants import FRAMES_DIR, FRAME_PREFIX
+from .constants import FRAMES_DIR, FRAME_PREFIX
 
 CropRegion = namedtuple('CropRegion', 'x_from x_to y_from y_to')
 

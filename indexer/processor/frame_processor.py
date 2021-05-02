@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from Types import VideoIndexEntry
+from ..Types import VideoIndexEntry
 
 
 class FrameProcessor(ABC):

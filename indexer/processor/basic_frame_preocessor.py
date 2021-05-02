@@ -2,7 +2,7 @@ from typing import Optional
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 
 from . import FrameProcessor
-from Types import VideoIndexEntry
+from ..Types import VideoIndexEntry
 
 
 class BasicFrameProcessor(FrameProcessor):

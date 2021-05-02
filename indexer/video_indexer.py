@@ -9,10 +9,10 @@ from pathlib import Path
 from PIL import Image
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 
-from VideoConverter import VideoConverter, CropRegion
-from constants import FRAMES_DIR, FRAME_PREFIX
-from Types import Config, Stage, VideoIndexEntry, TableOfContents
-from processor import FrameProcessor, BasicFrameProcessor, TOCProcessor
+from .video_converter import VideoConverter, CropRegion
+from .Types import Config, Stage, VideoIndexEntry, TableOfContents
+from .processor import FrameProcessor, BasicFrameProcessor, TOCProcessor
+from .constants import FRAMES_DIR, FRAME_PREFIX
 
 ProgressCallback = Callable[[Stage, float], None]
 
@@ -30,7 +30,9 @@ class LectureVideoIndexer:
 
     __normalized_levenshtein = None
 
-    def __init__(self, config: Optional[Config] = None, progress_callback: ProgressCallback = lambda: None):
+    def __init__(self,
+                 config: Optional[Config] = None,
+                 progress_callback: ProgressCallback = lambda stage, progress: None):
         if config is not None:
             self.config = {**self.config, **config}
 

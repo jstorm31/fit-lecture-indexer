@@ -5,9 +5,7 @@ import os
 
 from pathlib import Path
 from tqdm import tqdm
-from LectureVideoIndexer import LectureVideoIndexer
-from VideoConverter import CropRegion
-from Types import Config, Stage
+from indexer import LectureVideoIndexer, CropRegion, Config, Stage
 
 OUTPUT_DIR = 'output'
 current_stage = None
