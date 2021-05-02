@@ -3,4 +3,4 @@ from .Types import Config, Stage
 from .video_converter import VideoConverter, CropRegion
 
 __name__ = 'strsimpy'
-__version__ = "0.1.4"
+__version__ = "0.1.0"
