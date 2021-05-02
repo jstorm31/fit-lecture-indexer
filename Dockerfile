@@ -11,4 +11,4 @@ COPY . .
 
 ENV FRAMES_DIR=/usr/app/frames
 
-CMD [ "python", "./src/cli.py" ]
+CMD [ "python", "cli.py" ]
