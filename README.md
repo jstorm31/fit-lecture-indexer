@@ -4,18 +4,18 @@ A python package for creating an index for lecture video - a list of timestamps 
 
 ## Table of contents
 
-- [Dependencies](#dependencies)
+- [Installation](#installation)
 - [Example](#example)
 - [How it works](#how-it-works)
 - [API](#api)
 - [Run in Docker container](#run-in-docker-container)
 
-## Dependencies
+## Installation
 
 Required python version: >= 3.8
 
  1. Make sure `tesseract` binary is installed system-wise
- 2. Install pyhton packages -  `pip install -r requirements.txt`
+ 2. `pip install fit-lecture-indexer`
 
 ## Example
 
@@ -42,10 +42,12 @@ Example result
 
 ### CLI
 
+In the package home directory:
+
 ```bash
-python3 src/cli.py -i video/example.mp4
+python cli.py -i video/example.mp4
 # or
-python3 src/cli.py -h
+python cli.py -h
 ```
 
 ## How it works
