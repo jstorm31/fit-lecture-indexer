@@ -78,6 +78,7 @@ class LectureVideoIndexer:
         filtered_frames: [int] = [0]
         prev_frame = 0
         max_frame = frames_count * self.config['frame_step']
+        prev_progress = 0
 
         for frame in range(self.config['frame_step'], max_frame, self.config['frame_step']):
             frame_path = self.__create_frame_path(frame)
@@ -88,7 +89,9 @@ class LectureVideoIndexer:
             prev_frame = frame
 
             progress = round((frame + 1) / max_frame * 100)
-            self.progress_callback(Stage.FILTERING, progress)
+            if progress > prev_progress:
+                self.progress_callback(Stage.FILTERING, progress)
+                prev_progress = progress
 
         return filtered_frames
 
@@ -100,6 +103,7 @@ class LectureVideoIndexer:
 
     def __process_frames(self, frames: [int], processor: FrameProcessor) -> VideoIndex:
         index: VideoIndex = []
+        prev_progress = 0
 
         for i in range(len(frames)):
             frame = frames[i]
@@ -113,7 +117,10 @@ class LectureVideoIndexer:
             if entry:
                 index.append(entry)
 
-            self.progress_callback(Stage.PROCESSING, round(((i + 1) * 100) / len(frames)))
+            progress = round(((i + 1) * 100) / len(frames))
+            if progress > prev_progress:
+                self.progress_callback(Stage.PROCESSING, progress)
+                prev_progress = progress
 
         return index
 
