@@ -5,7 +5,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(name='fit-lecture-indexer',
-      version='0.1.2',
+      version='0.1.3',
       description='A tool for extracting timestamps of slide transitions from a video lecture',
       long_description=README,
       long_description_content_type="text/markdown",
