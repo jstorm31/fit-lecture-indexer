@@ -41,7 +41,7 @@ class VideoConverter:
 
         if has_frames:
             if crop_region:
-                frame = frame[crop_region.x_from:crop_region.x_to, crop_region.y_from:crop_region.y_to]
+                frame = frame[crop_region.y_from:crop_region.y_to, crop_region.x_from:crop_region.x_to,]
 
             output_path = path.join(FRAMES_DIR, f'{FRAME_PREFIX}{second}.png')
             cv.imwrite(output_path, frame)

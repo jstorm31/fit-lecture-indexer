@@ -111,7 +111,7 @@ To set a custom directory for intermediary frames, use `FRAMES_DIR` environment 
 |---|---|---|
 | video_path  |  Path to the video file  | None  |
 | skip_converting  | Skips conerting the video into frames. Useful when running the method multiple times or the conversion is executed externally.  | False |
-| crop_region  | Crop region for frames a slide title is expected to be located. A tuple in format `(x_from, x_to, y_from, y_to)`. It improves both precision and performance. | None  |
+| crop_region  | Crop region for frames a slide title is expected to be located. A tuple in format `(x_from, x_to, y_from, y_to)` where individual values are absolut value of pixels as integers. It improves both precision and performance. | None  |
 | toc  | Path to a table of contents file in JSON format with array of slides titles. | None |
 
 #### Example 
@@ -134,7 +134,7 @@ Usage
 from indexer import LectureVideoIndexer, CropRegion
 
 indexer = LectureVideoIndexer()
-index = indexer.index(video_path='video/example.mp4', crop_region=CropRegion(0, 80, 890, 1700), toc='toc.json')
+index = indexer.index(video_path='video/example.mp4', crop_region=CropRegion(890, 1700, 0, 80), toc='toc.json')
 ```
 
 Result
