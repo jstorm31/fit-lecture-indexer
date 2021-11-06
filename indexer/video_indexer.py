@@ -128,11 +128,10 @@ class LectureVideoIndexer:
         img = cv.imread(path)
 
         img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        img = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11, 2)
         img = cv.medianBlur(img, 3)
-        thresholded_img = cv.adaptiveThreshold(img, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11,
-                                               2)
 
-        return thresholded_img
+        return img
 
     def __extract_title(self, text) -> str:
         lines = [line for line in text.strip().split('\n') if not line.isspace() and len(line) > 1]
