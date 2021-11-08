@@ -4,7 +4,7 @@ import imagehash
 import pytesseract
 import cv2 as cv
 
-from typing import Optional, Callable, TypedDict
+from typing import Optional, Callable, Tuple
 from pathlib import Path
 from PIL import Image
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
@@ -111,8 +111,9 @@ class LectureVideoIndexer:
             image = self.__preprocess_image(frame_path)
 
             text = pytesseract.image_to_string(image)
-            title = self.__extract_title(text)
-            entry = processor.process_frame(frame, title)
+            title, text = self.__extract_title(text)
+
+            entry = processor.process_frame(frame, title, text)
 
             if entry:
                 index.append(entry)
@@ -133,11 +134,12 @@ class LectureVideoIndexer:
 
         return img
 
-    def __extract_title(self, text) -> str:
+    def __extract_title(self, text) -> Tuple[str, str]:
         lines = [line for line in text.strip().split('\n') if not line.isspace() and len(line) > 1]
         title = lines[0] if lines else None
+        text = '\n'.join(lines[1:])
 
-        return title
+        return title, text
 
     def __create_frame_path(self, frame) -> str:
         return os.path.join(FRAMES_DIR, f"{FRAME_PREFIX}{frame}.png")

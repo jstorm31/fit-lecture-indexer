@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Tuple
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 
 from . import FrameProcessor
@@ -16,12 +16,12 @@ class TOCProcessor(FrameProcessor):
         self.toc = toc
         self.similarity_treshold = similarity_treshold
 
-    def process_frame(self, frame: int, title: str) -> Optional[VideoIndexEntry]:
+    def process_frame(self, frame: int, title: str, text: str) -> Optional[VideoIndexEntry]:
         if title and self.current_slide < len(self.toc):
             similarity, expected_title = self.__similarity(title, self.current_slide)
 
             if similarity >= self.similarity_treshold:
-                entry: VideoIndexEntry = {'second': frame, 'title': expected_title}
+                entry: VideoIndexEntry = {'second': frame, 'title': expected_title, 'text': text}
                 self.current_slide += 1
                 return entry
 
@@ -30,13 +30,13 @@ class TOCProcessor(FrameProcessor):
                 similarity, expected_title = self.__similarity(title, self.current_slide + 1)
 
                 if similarity >= self.similarity_treshold:
-                    entry: VideoIndexEntry = {'second': frame, 'title': expected_title}
+                    entry: VideoIndexEntry = {'second': frame, 'title': expected_title, 'text': text}
                     self.current_slide += 2
                     return entry
 
         return None
 
-    def __similarity(self, title: str, slide_index: int) -> (float, str):
+    def __similarity(self, title: str, slide_index: int) -> Tuple[float, str]:
         expected_title: str = self.toc[slide_index]['title']
         similarity = self.normalized_levenshtein.similarity(expected_title, title)
 
