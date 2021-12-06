@@ -32,12 +32,12 @@ if __name__ == '__main__':
                         required=False,
                         type=int)
     parser.add_argument('--image-similarity-treshold',
-                        dest='image_similarity_treshold',
+                        dest='image_similarity_threshold',
                         help='Treshold two images are considered similar',
                         required=False,
                         type=float)
     parser.add_argument('--text-similarity-treshold',
-                        dest='text_similarity_treshold',
+                        dest='text_similarity_threshold',
                         help='Treshold two images are considered similar',
                         required=False,
                         type=float)
@@ -57,8 +57,8 @@ if __name__ == '__main__':
     config: Config = {
         'frame_step': args.frame_step or 2,
         'hash_size': args.hash_size or 16,
-        'image_similarity_treshold': args.image_similarity_treshold or 0.9,
-        'text_similarity_treshold': args.text_similarity_treshold or 0.85,
+        'image_similarity_threshold': args.image_similarity_threshold or 0.9,
+        'text_similarity_threshold': args.text_similarity_threshold or 0.85,
     }
 
     crop_region = None

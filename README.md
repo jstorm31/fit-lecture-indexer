@@ -71,8 +71,8 @@ A constructor for an object running the video indexing.
 ```python
 config: Config = {
     'frame_step': 2,
-    'image_similarity_treshold': 0.9,
-    'text_similarity_treshold': 0.85,
+    'image_similarity_threshold': 0.9,
+    'text_similarity_threshold': 0.85,
     'hash_size': 16,
 }
 
@@ -82,8 +82,8 @@ indexer = LectureVideoIndexer(config=config)
 | Parameter  | Description  | Default value |
 |---|---|---|
 | frame_step  |  Create a frame every X seconds of the video  | 2  |
-| image_similarity_treshold  | Treshold two images are considered similar  | 0.9  |
-| text_similarity_treshold  | Treshold two images are considered similar  |  0.85  |
+| image_similarity_threshold  | Treshold two images are considered similar  | 0.9  |
+| text_similarity_threshold  | Treshold two images are considered similar  |  0.85  |
 | hash_size  | Number of bytes for image phash  | 16 |
 
 #### `ProgressCallback`

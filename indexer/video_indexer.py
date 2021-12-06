@@ -22,8 +22,8 @@ VideoIndex = [VideoIndexEntry]
 class LectureVideoIndexer:
     config: Config = {
         'frame_step': 2,
-        'image_similarity_treshold': 0.9,
-        'text_similarity_treshold': 0.85,
+        'image_similarity_threshold': 0.9,
+        'text_similarity_threshold': 0.85,
         'hash_size': 16,
     }
     progress_callback: ProgressCallback
@@ -54,8 +54,8 @@ class LectureVideoIndexer:
         filtered_frames = self.__filter_similar_frames(frames_count=len(frames))
 
         processor = BasicFrameProcessor(
-            self.config['text_similarity_treshold']) if toc is None else TOCProcessor(
-                toc, self.config['text_similarity_treshold'])
+            self.config['text_similarity_threshold']) if toc is None else TOCProcessor(
+                toc, self.config['text_similarity_threshold'])
         index = self.__process_frames(filtered_frames, processor)
 
         return index
@@ -84,7 +84,7 @@ class LectureVideoIndexer:
             frame_path = self.__create_frame_path(frame)
             similarity = self.__compare_images(self.__create_frame_path(prev_frame), frame_path)
 
-            if (similarity < self.config['image_similarity_treshold']):
+            if (similarity < self.config['image_similarity_threshold']):
                 filtered_frames.append(frame)
             prev_frame = frame
 
