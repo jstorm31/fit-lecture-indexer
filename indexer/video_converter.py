@@ -19,7 +19,7 @@ class VideoConverter:
 
     def convert_to_frames(self, video_path: PathLike, crop_region: CropRegion = None):
         if not path.exists(video_path):
-            raise Exception('Invalid input video path')
+            raise Exception('Invalid input video path: ', video_path)
 
         video_capture = cv.VideoCapture(video_path)
         video_len = self.__get_video_length(video_path)

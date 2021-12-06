@@ -4,12 +4,10 @@ import json
 import os
 
 from tqdm import tqdm
-from LectureVideoIndexer import LectureVideoIndexer
-from Stage import Stage
-from VideoConverter import CropRegion
+from indexer import LectureVideoIndexer, Stage, CropRegion
 
 current_stage = None
-
+test_videos_path = os.environ.get('TEST_VIDEO_PATH')
 
 def list_diff(li1, li2):
     return (list(list(set(li1) - set(li2)) + list(set(li2) - set(li1))))
@@ -31,7 +29,7 @@ def compare_index(ref_video, treshold):
 
     indexer = LectureVideoIndexer(
         config=config, progress_callback=lambda stage, progress: handle_progress(bar, stage, progress))
-    index = indexer.index(video_path=os.path.join('video', ref_video['name']), crop_region=crop_region)
+    index = indexer.index(video_path=os.path.join(test_videos_path, ref_video['name']), crop_region=crop_region)
     seconds = [entry['second'] for entry in index]
     print(seconds)
     bar.close()
@@ -45,7 +43,7 @@ def compare_index(ref_video, treshold):
 if __name__ == '__main__':
     tresholds = [0.9]
 
-    with open('src/test_data/reference.json') as json_data:
+    with open('test_data/reference.json') as json_data:
         test_data = json.load(json_data)
 
         for treshold in tresholds:
