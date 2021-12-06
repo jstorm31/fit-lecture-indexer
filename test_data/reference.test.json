@@ -1,6 +1,7 @@
 [
     {
         "name": "trimmed.mp4",
+        "cropRegion": [885, 1827, 5, 81],
         "index": [4, 244, 312]
     }
 ]
