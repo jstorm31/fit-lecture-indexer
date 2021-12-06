@@ -3,6 +3,7 @@
 import argparse
 import json
 import os
+import time
 
 from tqdm import tqdm
 from indexer import LectureVideoIndexer, Stage, CropRegion
@@ -10,6 +11,7 @@ from utils.Intersector import Intersector
 
 current_stage = None
 test_videos_path = os.environ.get('TEST_VIDEO_PATH')
+EXTRA_FRAME_RATIO = 0.5
 
 
 def list_diff(li1, li2):
@@ -22,7 +24,7 @@ def handle_progress(bar, stage: Stage, progress: float):
     bar.update(progress - bar.n)
 
 
-def compare_index(ref_video, config):
+def compare_index(ref_video, config, crop_region):
     print(f"Creating index for {ref_video['name']}")
     bar = tqdm(total=100)
     current_stage = None
@@ -31,7 +33,8 @@ def compare_index(ref_video, config):
 
     indexer = LectureVideoIndexer(
         config=config, progress_callback=lambda stage, progress: handle_progress(bar, stage, progress))
-    index = indexer.index(video_path=os.path.join(test_videos_path, ref_video['name']))
+    index = indexer.index(video_path=os.path.join(test_videos_path, ref_video['name']),
+                          crop_region=crop_region)
     seconds = [entry['second'] for entry in index]
     print(seconds)
     bar.close()
@@ -39,7 +42,13 @@ def compare_index(ref_video, config):
     # Intersection with a custom equivalence metric considering error in seconds
     intersector = Intersector(lambda x, y: abs(x - y) <= config['frame_step'])
     intersection_cnt = len(list(intersector.intersect(set(seconds), set(ref_video['index']))))
-    precision = intersection_cnt / len(ref_video['index'])
+    extra_frames_cnt = len(seconds) - intersection_cnt
+
+    precision = (intersection_cnt - extra_frames_cnt * EXTRA_FRAME_RATIO) / len(ref_video['index'])
+
+    if precision < 0:
+        precision = 0
+
     print(precision)
     return precision
 
@@ -48,13 +57,25 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--param', dest="param", help="Name of the observed config param", required=True)
     parser.add_argument('--values', dest="values", help="Comma separated values", required=True)
+    parser.add_argument('--crop-region',
+                        dest='crop_region',
+                        help='Crop region for frames in format "x_from,x_to,y_from,y_to"',
+                        type=str)
 
     args = parser.parse_args()
     observed_param = args.param
+
     values = [
         int(x) if observed_param == 'frame_step' or observed_param == 'hash_size' else float(x)
         for x in args.values.split(',')
     ]
+
+    crop_region = None
+    if args.crop_region:
+        coordinates = args.crop_region.split(',')
+        crop_region = CropRegion(int(coordinates[0]), int(coordinates[1]), int(coordinates[2]),
+                                 int(coordinates[3]))
+
     results = []
 
     config = {
@@ -74,14 +95,17 @@ if __name__ == '__main__':
             config[observed_param] = value
 
             for video in test_data:
-                index = compare_index(video, config)
+                start = time.time()
+                index = compare_index(video, config, crop_region)
+                end = time.time()
                 precisions.append(index)
 
             results.append({
                 'value': value,
                 'avg_precision': round(sum(precisions) / len(test_data), 3),
                 'max_precision': max(precisions),
-                'min_precision': min(precisions)
+                'min_precision': min(precisions),
+                'time': round(end - start)
             })
 
     with open(f'output/{observed_param}_results.json', 'w') as output_file:
