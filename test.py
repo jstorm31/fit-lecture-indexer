@@ -112,16 +112,16 @@ if __name__ == '__main__':
                     times.append(end - start)
                     local_results.append(result)
 
-                results.append({
-                    'value': value,
-                    'avg_precision': round(sum(precisions) / len(test_data), 3),
-                    'max_precision': round(max(precisions), 3),
-                    'min_precision': round(min(precisions), 3),
-                    'avg_time': round(sum(times) / len(times)),
-                    'max_time': round(max(times)),
-                    'min_time': round(min(times)),
-                    'results': local_results
-                })
+            results.append({
+                'value': value,
+                'avg_precision': round(sum(precisions) / len(test_data), 3),
+                'max_precision': round(max(precisions), 3),
+                'min_precision': round(min(precisions), 3),
+                'avg_time': round(sum(times) / len(times)),
+                'max_time': round(max(times)),
+                'min_time': round(min(times)),
+                'results': local_results
+            })
 
     with open(f'output/{observed_param}_results.json', 'w') as output_file:
         json = json.dumps(results, indent=4)
