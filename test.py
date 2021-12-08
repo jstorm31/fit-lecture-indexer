@@ -114,7 +114,7 @@ if __name__ == '__main__':
 
             results.append({
                 'value': value,
-                'avg_precision': round(sum(precisions) / len(test_data), 3),
+                'avg_precision': round(sum(precisions) / len(precisions), 3),
                 'max_precision': round(max(precisions), 3),
                 'min_precision': round(min(precisions), 3),
                 'avg_time': round(sum(times) / len(times)),
